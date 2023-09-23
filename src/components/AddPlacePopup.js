@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-const AddPlacePopup = ({ onClose, onAddPlace }) => {
+const AddPlacePopup = ({ onClose, isOpen }) => {
   const [formValues, setFormValues] = useState({
     name: "",
     link: "",
@@ -9,7 +9,6 @@ const AddPlacePopup = ({ onClose, onAddPlace }) => {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onAddPlace(formValues);
   }
 
   return (
@@ -19,6 +18,7 @@ const AddPlacePopup = ({ onClose, onAddPlace }) => {
       btnText="Создать"
       onClose={onClose}
       onSubmit={handleSubmit}
+      isOpen={isOpen}
     >
       <input
         className="popup__input popup__info popup__info_type_name-image"
