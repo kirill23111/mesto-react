@@ -1,26 +1,19 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 const EditAvatarPopup = ({ onClose, isOpen, currentUser }) => {
   const refInput = useRef(null);
-  const [avatarLink, setAvatarLink] = useState('');
-  const [initialAvatarLink, setInitialAvatarLink] = useState('');
 
   useEffect(() => {
     if (isOpen && currentUser) {
-      setAvatarLink(currentUser.avatar);
-      setInitialAvatarLink(currentUser.avatar);
+      refInput.current.value = currentUser.avatar;
+    } else {
+      refInput.current.value = ""; // Обнуляем значение при закрытии попапа
     }
   }, [isOpen, currentUser]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    // Handle avatar link submission here
-  }
-
-  function handleCancel() {
-    setAvatarLink(initialAvatarLink);
-    onClose();
   }
 
   return (
@@ -28,7 +21,7 @@ const EditAvatarPopup = ({ onClose, isOpen, currentUser }) => {
       isOpen={isOpen}
       title="Обновить аватар"
       name="popup-avatar"
-      onClose={handleCancel}
+      onClose={onClose}
       onSubmit={handleSubmit}
     >
       <input
@@ -38,8 +31,6 @@ const EditAvatarPopup = ({ onClose, isOpen, currentUser }) => {
         placeholder="Ссылка на картинку"
         name="link"
         required
-        value={avatarLink}
-        onChange={(e) => setAvatarLink(e.target.value)}
         ref={refInput}
       />
       <span className="popup__input-error"></span>
