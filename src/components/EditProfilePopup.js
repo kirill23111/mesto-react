@@ -4,13 +4,16 @@ import PopupWithForm from "./PopupWithForm";
 
 function EditProfilePopup({ onClose, isOpen }) {
   const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState(currentUser.name);
-  const [description, setDescription] = useState(currentUser.about);
+
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser]);
+    if (isOpen) {
+      setName(currentUser.name || "");
+      setDescription(currentUser.about || "");
+    }
+  }, [isOpen, currentUser]);
 
   function handleSubmit(evt) {
     evt.preventDefault();

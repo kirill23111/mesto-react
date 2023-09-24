@@ -1,6 +1,6 @@
-function ImagePopup({ card, onClose }) {
+function ImagePopup({ card, isOpen, onClose }) {
   return (
-    <div className={`popup image-popup ${card ? "popup_opened" : ""}`}>
+    <div className={`popup image-popup ${isOpen ? "popup_opened" : ""}`}>
       <figure className="popup-full__container">
         <img className="popup-full__image" src={card?.link} alt={card?.name} />
         <h2 className="popup-full__title">{card?.name}</h2>

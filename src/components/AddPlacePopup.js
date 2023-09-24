@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 const AddPlacePopup = ({ onClose, isOpen }) => {
@@ -7,14 +7,31 @@ const AddPlacePopup = ({ onClose, isOpen }) => {
     link: "",
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      setFormValues({
+        name: "",
+        link: "",
+      });
+    }
+  }, [isOpen]);
+  
   function handleSubmit(evt) {
     evt.preventDefault();
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
   }
 
   return (
     <PopupWithForm
       name="newcard"
-      title="Новое место2"
+      title="Новое место"
       btnText="Создать"
       onClose={onClose}
       onSubmit={handleSubmit}
@@ -30,14 +47,9 @@ const AddPlacePopup = ({ onClose, isOpen }) => {
         placeholder="Название"
         required
         value={formValues.name}
-        onChange={(e) =>
-          setFormValues({
-            ...formValues,
-            [e.target.name]: e.target.value,
-          })
-        }
+        onChange={handleChange}
       />
-      <span className="popup__input-eror mesto-error"></span>
+      <span className="popup__input-error mesto-error"></span>
       <input
         className="popup__input popup__info popup__info_type_image"
         id="link-input"
@@ -46,14 +58,9 @@ const AddPlacePopup = ({ onClose, isOpen }) => {
         placeholder="Ссылка на картинку"
         required
         value={formValues.link}
-        onChange={(e) =>
-          setFormValues({
-            ...formValues,
-            [e.target.name]: e.target.value,
-          })
-        }
+        onChange={handleChange}
       />
-      <span className="popup__input-eror mesto-error"></span>
+      <span className="popup__input-error mesto-error"></span>
     </PopupWithForm>
   );
 };

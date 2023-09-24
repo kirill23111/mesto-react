@@ -12,6 +12,7 @@ import CurrentUserContext from "../contexts/CurrentUserContext.js";
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
@@ -28,7 +29,6 @@ function App() {
       });
   }, []);
 
-
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
@@ -43,13 +43,14 @@ function App() {
 
   function handleCardClick(card) {
     setSelectedCard(card);
+    setIsImagePopupOpen(true);
   }
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
-    setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setIsEditProfilePopupOpen(false)
+    setIsEditProfilePopupOpen(false);
+    setIsImagePopupOpen(false);
   }
 
   return (
@@ -76,10 +77,11 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
         />
-        <ImagePopup card={selectedCard} onClose={() => setSelectedCard(null)} />
+        <ImagePopup card={selectedCard} isOpen={isImagePopupOpen} onClose={closeAllPopups} />
       </div>
     </CurrentUserContext.Provider>
   );
 }
+
 
 export default App;
