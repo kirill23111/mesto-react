@@ -8,6 +8,8 @@ function Main({
   onAddPlace,
   onEditAvatar,
   onCardClick,
+  onCardDelete,
+  onCardLike,
 }) {
   const user = useContext(CurrentUserContext);
 
@@ -16,23 +18,23 @@ function Main({
       <section className="profile">
         <img src={user?.avatar} alt={user?.name} className="profile__image" />
         <button
-          className="profile__image profile__image_button"
+          class="profile__image profile__image_button"
           alt="профиль"
           onClick={onEditAvatar}
         ></button>
-        <div className="profile__info">
-          <h1 className="profile__title">{user?.name}</h1>
-          <h2 className="profile__paragraph">{user?.about}</h2>
+        <div class="profile__info">
+          <h1 class="profile__title">{user?.name}</h1>
+          <h2 class="profile__paragraph">{user?.about}</h2>
           <button
             onClick={onEditProfile}
-            className="profile__edit-button"
+            class="profile__edit-button"
             type="button"
           ></button>
         </div>
         <button
           onClick={onAddPlace}
           type="button"
-          className="profile__add-button"
+          class="profile__add-button"
         ></button>
       </section>
       <section className="elements">
@@ -40,6 +42,8 @@ function Main({
           <Card
             card={card}
             onCardClick={onCardClick}
+            onCardLike={onCardLike}
+            onCardDelete={onCardDelete}
             key={card._id}
           />
         ))}

@@ -1,41 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-const AddPlacePopup = ({ onClose, isOpen }) => {
+const AddPlacePopup = ({ onClose, onAddPlace }) => {
   const [formValues, setFormValues] = useState({
     name: "",
     link: "",
   });
 
-  useEffect(() => {
-    if (isOpen) {
-      setFormValues({
-        name: "",
-        link: "",
-      });
-    }
-  }, [isOpen]);
-  
   function handleSubmit(evt) {
     evt.preventDefault();
-  }
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
+    onAddPlace(formValues);
   }
 
   return (
     <PopupWithForm
       name="newcard"
-      title="Новое место"
+      title="Новое место2"
       btnText="Создать"
       onClose={onClose}
       onSubmit={handleSubmit}
-      isOpen={isOpen}
     >
       <input
         className="popup__input popup__info popup__info_type_name-image"
@@ -47,9 +30,14 @@ const AddPlacePopup = ({ onClose, isOpen }) => {
         placeholder="Название"
         required
         value={formValues.name}
-        onChange={handleChange}
+        onChange={(e) =>
+          setFormValues({
+            ...formValues,
+            [e.target.name]: e.target.value,
+          })
+        }
       />
-      <span className="popup__input-error mesto-error"></span>
+      <span className="popup__input-eror mesto-error"></span>
       <input
         className="popup__input popup__info popup__info_type_image"
         id="link-input"
@@ -58,9 +46,14 @@ const AddPlacePopup = ({ onClose, isOpen }) => {
         placeholder="Ссылка на картинку"
         required
         value={formValues.link}
-        onChange={handleChange}
+        onChange={(e) =>
+          setFormValues({
+            ...formValues,
+            [e.target.name]: e.target.value,
+          })
+        }
       />
-      <span className="popup__input-error mesto-error"></span>
+      <span className="popup__input-eror mesto-error"></span>
     </PopupWithForm>
   );
 };

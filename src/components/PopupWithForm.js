@@ -5,10 +5,9 @@ function PopupWithForm({
   onClose,
   onSubmit,
   btnText,
-  isOpen,
 }) {
   return (
-    <section className={`popup ${name} ${isOpen ? "popup_opened" : ""}`}>
+    <section className={`popup ${name}`}>
       <div className="popup__container">
         <button className="popup__close" type="button" onClick={onClose} />
         <div className="popup__content">

@@ -2,21 +2,22 @@ import { useContext, useState, useEffect } from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import PopupWithForm from "./PopupWithForm";
 
-function EditProfilePopup({ onClose, isOpen }) {
+function EditProfilePopup({ onUpdateUser, onClose }) {
   const currentUser = useContext(CurrentUserContext);
-
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState(currentUser.name);
+  const [description, setDescription] = useState(currentUser.about);
 
   useEffect(() => {
-    if (isOpen) {
-      setName(currentUser.name || "");
-      setDescription(currentUser.about || "");
-    }
-  }, [isOpen, currentUser]);
+    setName(currentUser.name);
+    setDescription(currentUser.about);
+  }, [currentUser]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    onUpdateUser({
+      name,
+      about: description,
+    });
   }
 
   function handleChangeName(evt) {
@@ -34,7 +35,6 @@ function EditProfilePopup({ onClose, isOpen }) {
         name="edit-popup"
         onClose={onClose}
         onSubmit={handleSubmit}
-        isOpen={isOpen}
       >
         <input
           className="popup__input popup__info popup__info_type_name"
