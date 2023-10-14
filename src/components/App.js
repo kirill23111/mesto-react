@@ -63,6 +63,7 @@ function handleCardLike(card) {
       .updateUserInfo(items)
       .then((user) => {
         setCurrentUser(user);
+        // console.log(user);
         setIsEditProfilePopupOpen(true);
         closeAllPopups();
       })
