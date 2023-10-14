@@ -61,7 +61,7 @@ class Api {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({ avatar }),
-    })
+    }).then(this._checkResponse);
   }
 
   likeCard(cardId) {

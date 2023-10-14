@@ -12,7 +12,7 @@ function Main({
   onCardLike,
 }) {
   const user = useContext(CurrentUserContext);
-  console.log(user);
+
   return (
     <main>
       <section className="profile">
