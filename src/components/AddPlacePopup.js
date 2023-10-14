@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-const AddPlacePopup = ({ onClose, onAddPlace }) => {
+const AddPlacePopup = ({ onClose, onAddPlace, isOpen }) => {
   const [formValues, setFormValues] = useState({
     name: "",
     link: "",
@@ -12,11 +12,20 @@ const AddPlacePopup = ({ onClose, onAddPlace }) => {
     onAddPlace(formValues);
   }
 
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  }
+
   return (
     <PopupWithForm
       name="newcard"
-      title="Новое место2"
+      title="Новое место"
       btnText="Создать"
+      isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
     >
@@ -30,12 +39,7 @@ const AddPlacePopup = ({ onClose, onAddPlace }) => {
         placeholder="Название"
         required
         value={formValues.name}
-        onChange={(e) =>
-          setFormValues({
-            ...formValues,
-            [e.target.name]: e.target.value,
-          })
-        }
+        onChange={handleChange}
       />
       <span className="popup__input-eror mesto-error"></span>
       <input
@@ -46,12 +50,7 @@ const AddPlacePopup = ({ onClose, onAddPlace }) => {
         placeholder="Ссылка на картинку"
         required
         value={formValues.link}
-        onChange={(e) =>
-          setFormValues({
-            ...formValues,
-            [e.target.name]: e.target.value,
-          })
-        }
+        onChange={handleChange}
       />
       <span className="popup__input-eror mesto-error"></span>
     </PopupWithForm>

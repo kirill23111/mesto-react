@@ -55,14 +55,13 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  updateUserAvatar({ link }) {
+  updateUserAvatar({ avatar }) {
+    console.log({ avatar });
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
-      body: JSON.stringify({
-        avatar: link,
-      }),
-    }).then(this._checkResponse);
+      body: JSON.stringify({ avatar }),
+    })
   }
 
   likeCard(cardId) {
@@ -71,6 +70,7 @@ class Api {
       headers: this._headers,
     }).then(this._checkResponse);
   }
+
 
   dislikeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
