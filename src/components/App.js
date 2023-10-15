@@ -119,6 +119,7 @@ function handleCardLike(card) {
     setIsAddPlacePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsImagePopupOpen(false);
+    setSelectedCard(null);
   }
 
   return (
@@ -150,7 +151,7 @@ function handleCardLike(card) {
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
         />
-        <ImagePopup card={selectedCard} isOpen={isImagePopupOpen} onClose={() => setSelectedCard(null)} />
+<ImagePopup card={selectedCard} isOpen={isImagePopupOpen} onClose={closeAllPopups} />
       </div>
     </CurrentUserContext.Provider>
   );
