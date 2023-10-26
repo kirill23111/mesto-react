@@ -9,6 +9,7 @@ import EditAvatarPopup from "../components/EditAvatarPopup.js";
 import AddPlacePopup from "../components/AddPlacePopup.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 
+
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -17,6 +18,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  // const navigate = useNavigate();
 
   useEffect(() => {
     Promise.all([api.getUser(), api.getInitialCards()])
