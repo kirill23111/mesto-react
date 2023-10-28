@@ -1,50 +1,41 @@
-export const BASE_URL = 'https://api.nomoreparties.co';
+export const BASE_URL = "https://auth.nomoreparties.co";
 
-export const register = (password, email) => {
-  return fetch(`${BASE_URL}/auth/local/register`, {
-    method: 'POST',
+export const register = async (email, password) => {
+  const res = await fetch(`${BASE_URL}/signup`, {
+    method: "POST",
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({password, email})
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((res) => {
-    return res;
-  })
-  .catch((err) => console.log(err));
+    body: JSON.stringify({ password, email }),
+  });
+  const data = await res.json();
+
+  return data;
 };
-export const authorize = (identifier, password) => {
-  return fetch(`${BASE_URL}/auth/local`, {
-    method: 'POST',
+export const authorize = async (email, password) => {
+  const res = await fetch(`${BASE_URL}/signin`, {
+    method: "POST",
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({identifier, password})
-  })
-  .then((response => response.json()))
-  .then((data) => {
-    if (data.user){
-      localStorage.setItem('jwt', data.jwt);
-      return data;
-    }
-  })
-  .catch(err => console.log(err))
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+
+  localStorage.setItem("jwt", data.token);
+
+  return data;
 };
 
-export const checkToken = (token) => {
+export const checkToken = async (token) => {
   return fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    }
-  })
-  .then(res => res.json())
-  .then(data => data)
-}
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+};

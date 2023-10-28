@@ -18,11 +18,13 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
+  async getInitialCards() {
+    const res = await fetch(`${this._baseUrl}/cards`, {
       method: "GET",
       headers: this._headers,
-    }).then(this._checkResponse);
+    });
+
+    return await this._checkResponse(res);
   }
 
   updateUserInfo({ name, about }) {
@@ -70,7 +72,6 @@ class Api {
       headers: this._headers,
     }).then(this._checkResponse);
   }
-
 
   dislikeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
