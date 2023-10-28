@@ -1,32 +1,27 @@
 export const BASE_URL = "https://auth.nomoreparties.co";
 
-export const register = async (email, password) => {
-  const res = await fetch(`${BASE_URL}/signup`, {
+export const register = (email, password) => {
+  return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ password, email }),
-  });
-  const data = await res.json();
-
-  return data;
+  }).then((res) => res.json());
 };
 export const authorize = async (email, password) => {
-  const res = await fetch(`${BASE_URL}/signin`, {
+  return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
+  }).then((res) => {
+    const data = res.json();
+    return data;
   });
-  const data = await res.json();
-
-  localStorage.setItem("jwt", data.token);
-
-  return data;
 };
 
 export const checkToken = async (token) => {

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as auth from "../utils/auth";
 // import './styles/Register.css';
 
-const Register = ({ handleLogin, handleOpenInfoTooltip }) => {
+const Register = ({ handleOpenInfoTooltip }) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -18,25 +18,25 @@ const Register = ({ handleLogin, handleOpenInfoTooltip }) => {
       [name]: value,
     });
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!formValue.email || !formValue.password) {
       return;
     }
-    try {
-      await auth.register(formValue.email, formValue.password);
-      await handleLogin(formValue);
-      navigate("/");
+    auth.register(formValue.email, formValue.password).then((data) => {
+      if (data.error) {
+        handleOpenInfoTooltip({
+          success: false,
+          message: data.error,
+        });
+        return;
+      }
+      navigate("/login");
       handleOpenInfoTooltip({
         success: true,
         message: "Вы успешно зарегестрированы!",
       });
-    } catch {
-      handleOpenInfoTooltip({
-        success: false,
-        message: "Что-то пошло не так. Попробуйте её раз",
-      });
-    }
+    });
   };
 
   return (
@@ -70,7 +70,7 @@ const Register = ({ handleLogin, handleOpenInfoTooltip }) => {
       <div className="login__signin">
         {/* <p>Уже зарегистрированы?</p> */}
         <Link to="/login" className="login__login-link">
-        Уже зарегистрированы? Войти
+          Уже зарегистрированы? Войти
         </Link>
       </div>
     </div>

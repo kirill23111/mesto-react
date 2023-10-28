@@ -17,25 +17,26 @@ const Login = ({ handleLogin, handleOpenInfoTooltip }) => {
       [name]: value,
     });
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!formValue.email || !formValue.password) {
       return;
     }
 
-    try {
-      await handleLogin(formValue);
+    handleLogin(formValue).then((data) => {
+      if (data?.error) {
+        return handleOpenInfoTooltip({
+          success: false,
+          message: data.error,
+        });
+      }
+
       navigate("/");
       handleOpenInfoTooltip({
         success: true,
         message: "Вы успешно залогинились!",
       });
-    } catch {
-      handleOpenInfoTooltip({
-        success: false,
-        message: "Что-то пошло не так. Попробуйте её раз",
-      });
-    }
+    });
   };
 
   return (

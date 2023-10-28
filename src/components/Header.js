@@ -43,14 +43,17 @@
 
 // export default Header;
 import { useContext, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { Link } from "react-router-dom";
 import logo from "../images/header.svg";
 
 function Header({ isLoggedIn, handleLogout }) {
+  const location = useLocation();
   const currentUser = useContext(CurrentUserContext);
   const [mobileMenuIsOpened, setMobileMenuIsOpened] = useState(false);
   const [isMobileScreen, setIsMobileScreen] = useState(false);
+  const isRegisterPage = location.pathname === "/register";
 
   useEffect(() => {
     // Обновляем состояние isMobileScreen при монтировании компонента и изменении размера окна
@@ -71,25 +74,53 @@ function Header({ isLoggedIn, handleLogout }) {
   }
 
   return (
-    <header className="header">
-      <img className="header__image" src={logo} alt="Место" />
-      {isLoggedIn && (
-        <div className={`header__info ${isMobileScreen ? "" : "header__info_open"}`}>
+    <>
+      {isLoggedIn && isMobileScreen && mobileMenuIsOpened && (
+        <div>
           <p className="header__email">{currentUser?.email}</p>
-          <button className="header__button" onClick={handleLogout}>Выйти</button>
+          <button className="header__button" onClick={handleLogout}>
+            Выйти
+          </button>
         </div>
       )}
-      {isMobileScreen && isLoggedIn && (
-        <button
-          type="button"
-          className={`burger header__burger ${mobileMenuIsOpened ? "burger_open" : ""}`}
-          onClick={handleToggleMenu}
-        >
-          <div className="burger__icon"></div>
-        </button>
-      )}
-      {!isLoggedIn && <Link className="header__button" to="/register">Зарегистрироваться</Link>}
-    </header>
+      <header className="header">
+        <img className="header__image" src={logo} alt="Место" />
+        {isLoggedIn && (
+          <div
+            className={`header__info ${
+              isMobileScreen ? "" : "header__info_open"
+            }`}
+          >
+            <p className="header__email">{currentUser?.email}</p>
+            <button className="header__button" onClick={handleLogout}>
+              Выйти
+            </button>
+          </div>
+        )}
+
+        {isMobileScreen && isLoggedIn && (
+          <button
+            type="button"
+            className={`burger header__burger ${
+              mobileMenuIsOpened ? "burger_open" : ""
+            }`}
+            onClick={handleToggleMenu}
+          >
+            <div className="burger__icon"></div>
+          </button>
+        )}
+        {!isLoggedIn && !isRegisterPage && (
+          <Link className="header__button" to="/register">
+            Зарегистрироваться
+          </Link>
+        )}
+        {!isLoggedIn && isRegisterPage && (
+          <Link className="header__button" to="/login">
+            Войти
+          </Link>
+        )}
+      </header>
+    </>
   );
 }
 

@@ -31,23 +31,21 @@ function App() {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      const token = localStorage.getItem("jwt");
-      if (!token || token === 'undefined') {
-        setIsLoggedIn(false);
-        return;
-      } else {
-        auth
-          .checkToken(token)
-          .then((user) => {
-            setCurrentUser(user);
-            setIsLoggedIn(true);
-          })
-          .catch(() => {
-            setIsLoggedIn(false);
-          });
-      }
-    })();
+    const token = localStorage.getItem("jwt");
+    if (!token || token === "undefined") {
+      setIsLoggedIn(false);
+      return;
+    } else {
+      auth
+        .checkToken(token)
+        .then((user) => {
+          setCurrentUser(user);
+          setIsLoggedIn(true);
+        })
+        .catch(() => {
+          setIsLoggedIn(false);
+        });
+    }
   }, []);
 
   useEffect(() => {
@@ -160,8 +158,8 @@ function App() {
   }
 
   function handleOpenInfoTooltip(data) {
-    setIsInfoTooltipOpen(true);
     setInfoTooltipData(data);
+    setIsInfoTooltipOpen(true);
   }
 
   function handleLogout() {
@@ -170,11 +168,20 @@ function App() {
     localStorage.clear();
   }
 
-  async function handleLogin({ email, password }) {
-    const { token } = await auth.authorize(email, password);
-    const user = await auth.checkToken(token);
-    setCurrentUser(user.data);
-    setIsLoggedIn(true);
+  function handleLogin({ email, password }) {
+    return auth.authorize(email, password).then(({ token }) => {
+      if (!token) {
+        return {
+          error: "Что-то пошло не так. Попробуйте её раз",
+        };
+      }
+
+      localStorage.setItem("jwt", token);
+      return auth.checkToken(token).then((user) => {
+        setCurrentUser(user.data);
+        setIsLoggedIn(true);
+      });
+    });
   }
 
   function closeAllPopups() {
@@ -238,6 +245,7 @@ function App() {
         <InfoTooltip
           isOpen={isInfoTooltipOpen}
           message={infoTooltipData.message}
+          success={infoTooltipData.success}
           onClose={closeAllPopups}
         />
         <AddPlacePopup
